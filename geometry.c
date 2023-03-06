@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define NAME_SIZE 25
+#define NAME_SIZE 20
 
 typedef struct point {
     double x;
@@ -14,7 +14,7 @@ typedef struct point {
 typedef struct circle {
     Point point;
     double radius;
-    double perimetr;
+    double perimeter;
     double area;
 } Circle;
 
@@ -181,14 +181,14 @@ void take_info_circle(Circle* circle, int* column, FILE* file)
         get_point(&circle->point, column, file);
         expect(',', column, ER_EXPECT_COMMA, file);
 
-        circle->raduis = get_number(column, file);
+        circle->radius = get_number(column, file);
 
         expect(')', column, ER_BACK_BRACE, file);
 
         end_of_line(column, file);
     
-    circle->perimeter = 2 * M_PI * circle->raduis;
-    circle->area = M_PI * circle->raduis * circle->raduis;
+    circle->perimeter = 2 * M_PI * circle->radius;
+    circle->area = M_PI * circle->radius * circle->radius;
 }
 
 void show_info_circle(Circle* circle)
@@ -196,7 +196,7 @@ void show_info_circle(Circle* circle)
     printf("circle(%.2f %.2f, %.2f)\n",
            circle->point.x,
            circle->point.y,
-           circle->raduis);
+           circle->radius);
     printf("\tarea = %.4f\n", circle->area);
     printf("\tperimeter = %.4f\n", circle->perimeter);
 }
