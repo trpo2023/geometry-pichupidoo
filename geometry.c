@@ -61,4 +61,74 @@ void print_error(int column, int status)
                column);
     }
 }
+void del_space(int* column, FILE* file)
+{
+    char ch;
+    while ((ch = getc(file)) == ' ') {
+        *column += 1;
+        continue;
+    }
+    if (ch != ' ')
+        ungetc(ch, file);
+}
+
+double get_number(int* column, FILE* file)
+{
+    char temp[20];
+    char ch;
+    int point_count = 0;
+    int i = 0;
+    int minus_count = 0;
+
+    del_space(column, file);
+
+    while ((ch = getc(file)) != ' ') {
+        temp[i] = ch;
+
+        if (temp[i] == '.') {
+            point_count++;
+            if (point_count > 1) {
+                print_error(*column + i + 1, ER_NOT_DOUBLE);
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        if (temp[i] == '-') {
+            minus_count++;
+            if (minus_count > 1) {
+                print_error(*column + i + 1, ER_NOT_DOUBLE);
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        if (temp[i] == ')') {
+            ungetc(temp[i], file);
+            i++;
+            break;
+        }
+
+        if (temp[i] == ',') {
+            ungetc(temp[i], file);
+            break;
+        }
+
+        if (temp[i] == '(') {
+            i++;
+            print_error(*column + i, ER_BACK_BRACE);
+            exit(EXIT_FAILURE);
+        }
+
+        if (!isdigit(temp[i]) && temp[i] != '.' && temp[i] != '-') {
+            i++;
+            print_error(*column + i, ER_NOT_DOUBLE);
+            exit(EXIT_FAILURE);
+        }
+
+        i++;
+    }
+    del_space(column, file);
+    *column += i + 1;
+    char* eptr;
+    return strtod(temp, &eptr);
+}
 
