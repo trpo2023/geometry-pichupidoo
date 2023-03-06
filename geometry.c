@@ -131,4 +131,25 @@ double get_number(int* column, FILE* file)
     char* eptr;
     return strtod(temp, &eptr);
 }
+bool expect(char expect, int* column, int status, FILE* file)
+{
+    char ch;
+    if ((ch = getc(file)) == expect) {
+        return true;
+    } else {
+            print_error(*column, status);
+            exit(EXIT_FAILURE);
+    }
+}
+
+bool unexpect(char unexpect, int* column, int status, FILE* file)
+{
+    char ch;
+    if ((ch = getc(file)) == unexpect) {
+        print_error(*column, status);
+        exit(EXIT_FAILURE);
+    }
+    ungetc(ch, file);
+    return true;
+}
 
