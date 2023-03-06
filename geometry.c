@@ -237,7 +237,7 @@ void parser_stdin(FILE* stdin)
 
 int main()
 {
-    parser_stdn(stdin);
+    parser_stdin(stdin);
 
     return 0;
 }
