@@ -33,31 +33,22 @@ void print_error(int column, int status)
     printf("^\n");
     switch (status) {
     case NAME:
-        printf("Error at column %d: expected "
-               "'circle'\n",
-               column);
+        printf("Error at column %d: expected 'circle'\n", column);
         break;
     case NOT_DOUBLE:
-        printf("Error at column %d: expected "
-               "'<double>'\n",
-               column);
+        printf("Error at column %d: expected '<double>'\n", column);
         break;
     case BACK_BRACE:
-        printf("Error at column %d: expected ')'\n",
-               column);
+        printf("Error at column %d: expected ')'\n",column);
         break;
     case UNEXPECT_TOKEN:
-        printf("Error at column %d: expected "
-               "token\n",
-               column);
+        printf("Error at column %d: expected token\n", column);
         break;
     case EXPECT_COMMA:
-        printf("Error at column %d: expected ','\n",
-                column);
+        printf("Error at column %d: expected ','\n", column);
         break;
     case UNEXPECT_COMMA:
-        printf("Error at column %d: expected ','\n",
-               column);
+        printf("Error at column %d: expected ','\n", column);
     }
 }
 
@@ -162,7 +153,7 @@ void get_point(Point* point, int* column, FILE* file)
     point->y = get_number(column, file);
 }
 
-void end_of_line(int* column, FILE* file)
+void line_ending(int* column, FILE* file)
 {
     char ch;
     while ((ch = getc(file)) != '\n' && ch != EOF) {
@@ -183,7 +174,7 @@ void take_info_circle(Circle* circle, int* column, FILE* file)
 
         expect(')', column, BACK_BRACE, file);
 
-        end_of_line(column, file);
+        line_ending(column, file);
 }
 
 void show_info_circle(Circle* circle)
