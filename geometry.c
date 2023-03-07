@@ -14,17 +14,15 @@ typedef struct point {
 typedef struct circle {
     Point point;
     double radius;
-    double perimeter;
-    double area;
 } Circle;
 
 enum Errors {
-    ER_NAME,
-    ER_NOT_DOUBLE,
-    ER_BACK_BRACE,
-    ER_UNEXPECT_TOKEN,
-    ER_EXPECT_COMMA,
-    ER_UNEXPECT_COMMA,
+    NAME,
+    NOT_DOUBLE,
+    BACK_BRACE,
+    UNEXPECT_TOKEN,
+    EXPECT_COMMA,
+    UNEXPECT_COMMA,
 };
 
 void print_error(int column, int status)
@@ -34,30 +32,30 @@ void print_error(int column, int status)
     }
     printf("^\n");
     switch (status) {
-    case ER_NAME:
+    case NAME:
         printf("Error at column %d: expected "
                "'circle'\n",
                column);
         break;
-    case ER_NOT_DOUBLE:
+    case NOT_DOUBLE:
         printf("Error at column %d: expected "
                "'<double>'\n",
                column);
         break;
-    case ER_BACK_BRACE:
+    case BACK_BRACE:
         printf("Error at column %d: expected ')'\n",
                column);
         break;
-    case ER_UNEXPECT_TOKEN:
+    case UNEXPECT_TOKEN:
         printf("Error at column %d: expected "
                "token\n",
                column);
         break;
-    case ER_EXPECT_COMMA:
+    case EXPECT_COMMA:
         printf("Error at column %d: expected ','\n",
                 column);
         break;
-    case ER_UNEXPECT_COMMA:
+    case UNEXPECT_COMMA:
         printf("Error at column %d: expected ','\n",
                column);
     }
@@ -90,7 +88,7 @@ double get_number(int* column, FILE* file)
         if (temp[i] == '.') {
             point_count++;
             if (point_count > 1) {
-                print_error(*column + i + 1, ER_NOT_DOUBLE);
+                print_error(*column + i + 1, NOT_DOUBLE);
                 exit(EXIT_FAILURE);
             }
         }
@@ -98,7 +96,7 @@ double get_number(int* column, FILE* file)
         if (temp[i] == '-') {
             minus_count++;
             if (minus_count > 1) {
-                print_error(*column + i + 1, ER_NOT_DOUBLE);
+                print_error(*column + i + 1, NOT_DOUBLE);
                 exit(EXIT_FAILURE);
             }
         }
@@ -116,13 +114,13 @@ double get_number(int* column, FILE* file)
 
         if (temp[i] == '(') {
             i++;
-            print_error(*column + i, ER_BACK_BRACE);
+            print_error(*column + i, BACK_BRACE);
             exit(EXIT_FAILURE);
         }
 
         if (!isdigit(temp[i]) && temp[i] != '.' && temp[i] != '-') {
             i++;
-            print_error(*column + i, ER_NOT_DOUBLE);
+            print_error(*column + i, NOT_DOUBLE);
             exit(EXIT_FAILURE);
         }
 
@@ -159,7 +157,7 @@ bool unexpect(char unexpect, int* column, int status, FILE* file)
 void get_point(Point* point, int* column, FILE* file)
 {
     point->x = get_number(column, file);
-    unexpect(',', column, ER_UNEXPECT_COMMA, file);
+    unexpect(',', column, UNEXPECT_COMMA, file);
 
     point->y = get_number(column, file);
 }
@@ -169,7 +167,7 @@ void end_of_line(int* column, FILE* file)
     char ch;
     while ((ch = getc(file)) != '\n' && ch != EOF) {
         if (ch != ' ') {
-            print_error(*column, ER_UNEXPECT_TOKEN);
+            print_error(*column, UNEXPECT_TOKEN);
             exit(EXIT_FAILURE);
         }
         *column += 1;
@@ -179,16 +177,13 @@ void end_of_line(int* column, FILE* file)
 void take_info_circle(Circle* circle, int* column, FILE* file)
 {
         get_point(&circle->point, column, file);
-        expect(',', column, ER_EXPECT_COMMA, file);
+        expect(',', column, EXPECT_COMMA, file);
 
         circle->radius = get_number(column, file);
 
-        expect(')', column, ER_BACK_BRACE, file);
+        expect(')', column, BACK_BRACE, file);
 
         end_of_line(column, file);
-    
-    circle->perimeter = 2 * M_PI * circle->radius;
-    circle->area = M_PI * circle->radius * circle->radius;
 }
 
 void show_info_circle(Circle* circle)
@@ -197,11 +192,9 @@ void show_info_circle(Circle* circle)
            circle->point.x,
            circle->point.y,
            circle->radius);
-    printf("\tarea = %.4f\n", circle->area);
-    printf("\tperimeter = %.4f\n", circle->perimeter);
 }
 
-void parser_stdin(FILE* stdin)
+void _stdin(FILE* stdin)
 {
     char geom[NAME_SIZE] = {0};
     char ch;
@@ -219,13 +212,13 @@ void parser_stdin(FILE* stdin)
                     show_info_circle(&circle);
                     break;
                 } else {
-                    print_error(0, ER_NAME);
+                    print_error(0, NAME);
                     exit(EXIT_FAILURE);
                 }
             }
 
             if (ch == ')') {
-                print_error(column, ER_BACK_BRACE);
+                print_error(column, BACK_BRACE);
                 exit(EXIT_FAILURE);
             }
 
@@ -237,7 +230,7 @@ void parser_stdin(FILE* stdin)
 
 int main()
 {
-    parser_stdin(stdin);
+    _stdin(stdin);
 
     return 0;
 }
