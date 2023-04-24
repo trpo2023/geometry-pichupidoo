@@ -27,3 +27,4 @@ enum Errors {
 
 void take_info_circle(Circle* circle, int* column, FILE* file);
 void show_info_circle(Circle* circle);
+void parser(void);
