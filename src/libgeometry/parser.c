@@ -5,14 +5,14 @@
 
 void take_info_circle(Circle* circle, int* column, FILE* file)
 {
-        get_point(&circle->point, column, file);
-        expect(',', column, EXPECT_COMMA, file);
+    get_point(&circle->point, column, file);
+    expect(',', column, EXPECT_COMMA, file);
 
-        circle->radius = get_number(column, file);
+    circle->radius = get_number(column, file);
 
-        expect(')', column, BACK_BRACE, file);
+    expect(')', column, BACK_BRACE, file);
 
-        line_ending(column, file);
+    line_ending(column, file);
 }
 
 void show_info_circle(Circle* circle)
@@ -25,7 +25,7 @@ void show_info_circle(Circle* circle)
 
 void parser(void)
 {
-        char geom[NAME_SIZE] = {0};
+    char geom[NAME_SIZE] = {0};
     char ch;
     int column;
 

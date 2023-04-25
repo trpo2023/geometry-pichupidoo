@@ -1,7 +1,7 @@
 #pragma once
-#include <stdio.h>
-#include <stdbool.h>
 #include "parser.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 void print_error(int column, int status);
 void get_point(Point* point, int* column, FILE* file);

@@ -18,7 +18,7 @@ void print_error(int column, int status)
         printf("Error at column %d: expected '<double>'\n", column);
         break;
     case BACK_BRACE:
-        printf("Error at column %d: expected ')'\n",column);
+        printf("Error at column %d: expected ')'\n", column);
         break;
     case UNEXPECT_TOKEN:
         printf("Error at column %d: expected token\n", column);
@@ -108,8 +108,8 @@ bool expect(char expect, int* column, int status, FILE* file)
     if ((ch = getc(file)) == expect) {
         return true;
     } else {
-            print_error(*column, status);
-            exit(EXIT_FAILURE);
+        print_error(*column, status);
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -143,4 +143,3 @@ void line_ending(int* column, FILE* file)
         *column += 1;
     }
 }
-
